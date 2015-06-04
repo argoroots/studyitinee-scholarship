@@ -1,6 +1,6 @@
 script(type='text/ng-template', id='application')
 
-  //- pre.row {{ application | json }}
+  //- pre.row {{ education | json }}
 
   .row
     h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center(ng-if='sponsor==="skype"') Skype’s Foreign Studies’ Master’s Scholarship 2015
@@ -55,36 +55,38 @@ script(type='text/ng-template', id='application')
       input.form-control(id='phone', type='tel', ng-model='application.phone.value', ng-blur='doSave($event)')
 
 
-    //- h2.col-xs-12.col-sm-10.col-sm-offset-1 Education
+    h2.col-xs-12.col-sm-10.col-sm-offset-1 Education
 
-    //- p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education
 
-    //- .form-group.col-xs-12.col-sm-4.col-sm-offset-1
-    //-   label.control-label(for='university_name') University
-    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-4.col-sm-offset-1(ng-repeat-start='(id, e) in education')
+      label.control-label(for='institution-{{ id }}') University
+      input.form-control(id='institution-{{ id }}', type='text', ng-model='e.institution.value', ng-blur='doUniSave($event)')
 
-    //- .form-group.col-xs-12.col-sm-4
-    //-   label.control-label(for='university_curriculum') Curriculum
-    //-   input.form-control(id='university_curriculum', type='text', ng-model='application.university_curriculum.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-4
+      label.control-label(for='curriculum-{{ id }}') Curriculum
+      input.form-control(id='curriculum-{{ id }}', type='text', ng-model='e.curriculum.value', ng-blur='doUniSave($event)')
 
-    //- .form-group.col-xs-12.col-sm-2
-    //-   label.control-label(for='university_degree') Degree
-    //-   input.form-control(id='university_degree', type='text', ng-model='application.university_degree.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-2
+      label.control-label(for='degree-{{ id }}') Degree
+      input.form-control(id='degree-{{ id }}', type='text', ng-model='e.degree.value', ng-blur='doUniSave($event)')
 
-    //- .form-group.col-xs-12.col-sm-3.col-md-2.col-sm-offset-1
-    //-   label.control-label(for='university_name') Graduation year
-    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-3.col-md-2.col-sm-offset-1
+      label.control-label(for='graduation_year-{{ id }}') Graduation year
+      input.form-control(id='graduation_year-{{ id }}', type='text', ng-model='e.graduation_year.value', ng-blur='doUniSave($event)')
 
-    //- .form-group.col-xs-12.col-sm-3.col-md-2
-    //-   label.control-label(for='university_name') Average grade
-    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-3.col-md-2
+      label.control-label(for='average_grade-{{ id }}') Average grade
+      input.form-control(id='average_grade-{{ id }}', type='text', ng-model='e.average_grade.value', ng-blur='doUniSave($event)')
 
-    //- .form-group.col-xs-12.col-sm-4.col-md-6
-    //-   label.control-label(for='university_name') Thesis title
-    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+    .form-group.col-xs-12.col-sm-4.col-md-6
+      label.control-label(for='thesis_title-{{ id }}') Thesis title
+      input.form-control(id='thesis_title-{{ id }}', type='text', ng-model='e.thesis_title.value', ng-blur='doUniSave($event)')
 
-    //- .col-xs-12.col-sm-10.col-sm-offset-1.text-right(style='margin-top:30px')
-    //-   a(href='', ng-click='doCancel()') Add university
+    .spacer.col-xs-12(ng-repeat-end)
+
+    .col-xs-12.col-sm-10.col-sm-offset-1.text-right
+      a(href='', ng-click='doUniAdd()') Add university
 
 
     h2.col-xs-12.col-sm-10.col-sm-offset-1 Documents

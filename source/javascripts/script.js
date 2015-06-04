@@ -49,16 +49,14 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                 templateUrl: 'start',
                 controller: 'startCtrl'
             })
-            // .when('/:application_id/:application_key', {
-            //     templateUrl: 'application',
-            //     controller: 'applicationCtrl'
-            // })
             .when('/:sponsor/:application_id/:application_key', {
                 templateUrl: 'application',
                 controller: 'applicationCtrl'
             })
             .otherwise({
-                redirectTo: '/skype'
+                redirectTo: function() {
+                    window.location = 'http://studyitin.ee'
+                }
             })
     }])
 
@@ -114,16 +112,30 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                                 .success(function(data) {
                                     $http({
                                             method : 'POST',
-                                            url    : API_URL + 'email',
-                                            data   : getSignedData(API_USER, API_KEY, {
-                                                'to': $scope.email,
-                                                'subject': email_subject,
-                                                'message': 'Here is the link to your personal scholarship application form. Please keep it safe.<br>\n<br>\n<a href="' + url + '">' + url + '</a><br>\n<br>\nDo not share it!'
+                                            url    : API_URL + 'entity-' + $scope.id,
+                                            data   : getSignedData($scope.id, $scope.key, {
+                                                'definition': 'education',
+                                                'education-graduation-year': 2015
                                             })
                                         })
                                         .success(function(data) {
-                                            $scope.sending = false
-                                            $scope.sent = true
+                                            $http({
+                                                    method : 'POST',
+                                                    url    : API_URL + 'email',
+                                                    data   : getSignedData(API_USER, API_KEY, {
+                                                        'to': $scope.email,
+                                                        'subject': email_subject,
+                                                        'message': 'Here is the link to your personal scholarship application form. Please keep it safe.<br>\n<br>\n<a href="' + url + '">' + url + '</a><br>\n<br>\nDo not share it!'
+                                                    })
+                                                })
+                                                .success(function(data) {
+                                                    $scope.sending = false
+                                                    $scope.sent = true
+                                                })
+                                                .error(function(data) {
+                                                    cl(data.error)
+                                                    $scope.sending = false
+                                                })
                                         })
                                         .error(function(data) {
                                             cl(data.error)
@@ -154,6 +166,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
         $rootScope.sponsor = $routeParams.sponsor
         $scope.sponsor = $routeParams.sponsor
         $scope.application = {}
+        $scope.education = {}
 
         $http({
                 method : 'GET',
@@ -161,7 +174,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                 params : getSignedData($routeParams.application_id, $routeParams.application_key, {})
             })
             .success(function(data) {
-                for (key in data.result.properties) {
+                for(key in data.result.properties) {
                     if(data.result.properties[key].values) {
                         if(data.result.properties[key].datatype == 'boolean') {
                             $scope.application[key.replace('-', '_')] = {
@@ -171,7 +184,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                             }
                         } else if(data.result.properties[key].datatype == 'file') {
                             $scope.application[key.replace('-', '_')] = {}
-                            for (f in data.result.properties[key].values) {
+                            for(f in data.result.properties[key].values) {
                                 $scope.application[key.replace('-', '_')][data.result.properties[key].values[f].id] = {
                                     id: data.result.properties[key].values[f].id,
                                     old: data.result.properties[key].values[f].value,
@@ -187,6 +200,33 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                         }
                     }
                 }
+                $http({
+                        method : 'GET',
+                        url    : API_URL + 'entity-' + $routeParams.application_id + '/childs?definition=education',
+                        params : getSignedData($routeParams.application_id, $routeParams.application_key, {})
+                    })
+                    .success(function(data) {
+                        for(key in data.result.education.entities) {
+                            $http({
+                                    method : 'GET',
+                                    url    : API_URL + 'entity-' + data.result.education.entities[key].id,
+                                    params : getSignedData($routeParams.application_id, $routeParams.application_key, {})
+                                })
+                                .success(function(data) {
+                                    $scope.education[data.result.id] = {}
+                                    for(key in data.result.properties) {
+                                        if(data.result.properties[key].values) {
+                                            $scope.education[data.result.id][key.replace('-', '_')] = {
+                                                id: data.result.properties[key].values[0].id,
+                                                old: data.result.properties[key].values[0].value,
+                                                value: data.result.properties[key].values[0].value
+                                            }
+                                        }
+                                    }
+                                })
+                        }
+                    })
+
             })
             .error(function(data) {
                 $location.path('/')
@@ -221,6 +261,80 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                             }
                         } else {
                             $scope.application[field] = {}
+                        }
+                        $scope.sending = false
+                    })
+                    .error(function(data) {
+                        cl(data.error)
+                        $scope.sending = false
+                    })
+            }
+        }
+
+        $scope.doUniAdd = function(e) {
+            $http({
+                    method : 'POST',
+                    url    : API_URL + 'entity-' + $routeParams.application_id,
+                    data   : getSignedData($routeParams.application_id, $routeParams.application_key, {
+                        'definition': 'education',
+                        'education-graduation-year': 2015
+                    })
+                })
+                .success(function(data) {
+                    $http({
+                            method : 'GET',
+                            url    : API_URL + 'entity-' + data.result.id,
+                            params : getSignedData($routeParams.application_id, $routeParams.application_key, {})
+                        })
+                        .success(function(data) {
+                            $scope.education[data.result.id] = {}
+                            for(key in data.result.properties) {
+                                if(data.result.properties[key].values) {
+                                    $scope.education[data.result.id][key.replace('-', '_')] = {
+                                        id: data.result.properties[key].values[0].id,
+                                        old: data.result.properties[key].values[0].value,
+                                        value: data.result.properties[key].values[0].value
+                                    }
+                                }
+                            }
+                        })
+                })
+                .error(function(data) {
+                    cl(data.error)
+                    $scope.sending = false
+                })
+        }
+
+        $scope.doUniSave = function(e) {
+            var target = e.target || e.srcElement
+            var field = angular.element(target).attr('id').split('-')[0]
+            var id = angular.element(target).attr('id').split('-')[1]
+            var property = 'education-' + field.replace('_', '-')
+
+            if(!$scope.education[id][field]) return
+            if(!$scope.education[id][field].old && $scope.education[id][field].value || $scope.education[id][field].value != $scope.education[id][field].old) {
+                $scope.sending = true
+
+                if($scope.education[id][field].id) property += '.' + $scope.education[id][field].id
+
+                var properties = {}
+                properties[property] = $scope.education[id][field].value
+
+                $http({
+                        method : 'PUT',
+                        url    : API_URL + 'entity-' + id,
+                        data   : getSignedData($routeParams.application_id, $routeParams.application_key, properties)
+                    })
+                    .success(function(data) {
+                        var property = 'education-' + field.replace('_', '-')
+                        if(data.result.properties[property]) {
+                            $scope.education[id][field] = {
+                                id: data.result.properties[property][0].id,
+                                old: $scope.education[id][field].value,
+                                value: $scope.education[id][field].value
+                            }
+                        } else {
+                            $scope.education[id][field] = {}
                         }
                         $scope.sending = false
                     })
