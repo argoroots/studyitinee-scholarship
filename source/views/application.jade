@@ -1,0 +1,117 @@
+script(type='text/ng-template', id='application')
+
+  //- pre.row {{ application | json }}
+
+  .row
+    h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center(ng-if='sponsor==="skype"') Skype’s Foreign Studies’ Master’s Scholarship 2015
+    h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center(ng-if='sponsor==="lhv"') LHV Bank Scholarship for ICT students 2015
+
+  .row(ng-if='sponsor==="skype"')
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify
+      b Dear applicant
+      br
+      br
+      | Here you can submit your application for Skype’s Foreign Studies’ Master’s Scholarship 2015. Please send your application by
+      b  16 June 2015
+      |  at the latest. Application can be submitted in English or Estonian.
+      br
+      br
+      | If you have questions, please do not hesitate to contact us at
+      a(href='mailto:info@studyitin.ee')  info@studyitin.ee
+      | .
+
+  .row(ng-if='sponsor==="lhv"')
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify
+      b Dear applicant
+      br
+      br
+      | Here you can submit your application for LHV Bank Scholarship for ICT students 2015. Please send your application by
+      b  19 June 2015
+      |  at the latest. Application can be submitted in English or Estonian.
+      br
+      br
+      | If you have questions, please do not hesitate to contact us at
+      a(href='mailto:info@studyitin.ee')  info@studyitin.ee
+      | .
+
+
+    .spacer.col-xs-12
+
+  form#application.row
+
+    h2.col-xs-12.col-sm-10.col-sm-offset-1 Applicant
+
+    .form-group.col-xs-12.col-sm-5.col-sm-offset-1
+      label.control-label(for='forename') Forename
+      input.form-control(id='forename', type='text', ng-model='application.forename.value', ng-blur='doSave($event)')
+
+    .form-group.col-xs-12.col-sm-5
+      label.control-label(for='surname') Surname
+      input.form-control(id='surname', type='text', ng-model='application.surname.value', ng-blur='doSave($event)')
+
+
+    .form-group.col-xs-12.col-sm-4.col-sm-offset-1
+      label.control-label(for='phone') Phone
+      input.form-control(id='phone', type='tel', ng-model='application.phone.value', ng-blur='doSave($event)')
+
+
+    //- h2.col-xs-12.col-sm-10.col-sm-offset-1 Education
+
+    //- p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education
+
+    //- .form-group.col-xs-12.col-sm-4.col-sm-offset-1
+    //-   label.control-label(for='university_name') University
+    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+
+    //- .form-group.col-xs-12.col-sm-4
+    //-   label.control-label(for='university_curriculum') Curriculum
+    //-   input.form-control(id='university_curriculum', type='text', ng-model='application.university_curriculum.value', ng-blur='doUniSave($event)')
+
+    //- .form-group.col-xs-12.col-sm-2
+    //-   label.control-label(for='university_degree') Degree
+    //-   input.form-control(id='university_degree', type='text', ng-model='application.university_degree.value', ng-blur='doUniSave($event)')
+
+    //- .form-group.col-xs-12.col-sm-3.col-md-2.col-sm-offset-1
+    //-   label.control-label(for='university_name') Graduation year
+    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+
+    //- .form-group.col-xs-12.col-sm-3.col-md-2
+    //-   label.control-label(for='university_name') Average grade
+    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+
+    //- .form-group.col-xs-12.col-sm-4.col-md-6
+    //-   label.control-label(for='university_name') Thesis title
+    //-   input.form-control(id='university_name', type='text', ng-model='application.university_name.value', ng-blur='doUniSave($event)')
+
+    //- .col-xs-12.col-sm-10.col-sm-offset-1.text-right(style='margin-top:30px')
+    //-   a(href='', ng-click='doCancel()') Add university
+
+
+    h2.col-xs-12.col-sm-10.col-sm-offset-1 Documents
+
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Please upload following documents:
+    ul.col-xs-11.col-sm-9.col-xs-offset-1.col-sm-offset-2.text-justify(ng-if='sponsor==="skype"')
+      li Curriculum Vitae
+      li full results of your studies at the last educational institution you attended (i.e. your academic record)
+      li describe the topic you plan to cover in your Master’s thesis, or if you have not decided this, describe in general the field you are interested in (up to 1000 characters)
+      li essay on the topic “What I will be doing in five years’ time thanks to the Skype foreign studies scholarship” (4500-7000 characters)
+
+    ul.col-xs-11.col-sm-9.col-xs-offset-1.col-sm-offset-2.text-justify(ng-if='sponsor==="lhv"')
+      li Motivation letter
+      li Curriculum Vitae
+      li Academic results of entire study period from the last educational institution attended (academic record)
+      li Topic and short description of the bachelor’s thesis (up to 1000 characters)
+
+    ul.col-xs-11.col-sm-9.col-xs-offset-1.col-sm-offset-2.text-justify
+      li(ng-repeat='(id, f) in application.file')
+        a.file(href='', ng-click='doFileDelete("file", id)', title='Delete file...') {{ f.value }}
+
+    .form-group.col-xs-12.col-sm-5.col-sm-offset-1
+      input.form-control(ng-if='!application.file.progress', id='file', type='file', onchange='angular.element(this).scope().doFileUpload(this)')
+      .col-xs-12(ng-if='application.file.progress') {{ application.file.progress }}% uploaded. Please wait...
+
+    .spacer.col-xs-12
+
+    button.col-xs-4.col-sm-3.col-xs-offset-1.btn.btn-lg.btn-link.btn-danger.text-left(ng-click='doCancel()') Cancel application
+    button.col-xs-4.col-sm-3.col-xs-offset-1.col-sm-offset-4.btn.btn-lg.btn-success(ng-show='!sending', ng-click='fakeSave()') Save application
+    button.col-xs-4.col-sm-3.col-xs-offset-1.col-sm-offset-4.btn.btn-lg.btn-success.disabled(ng-show='sending', ng-click='fakeSave()') Saving ...

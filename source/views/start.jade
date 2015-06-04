@@ -1,0 +1,21 @@
+script(type='text/ng-template', id='start')
+
+  .row(ng-show='!sent')
+    h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center(ng-if='sponsor==="skype"') Skype’s Foreign Studies’ Master’s Scholarship 2015
+    h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center(ng-if='sponsor==="lhv"') LHV Bank Scholarship for ICT students 2015
+
+  .row(ng-show='sent')
+    h1.col-xs-12.col-sm-10.col-sm-offset-1.text-center Thank You!
+
+  .row
+    p.text-center.col-xs-12.col-sm-8.col-sm-offset-2(ng-show='!sent') To start filling in scholarship application form, please enter your e-mail address below. Your application link will be sent to this e-mail.
+    p.text-center.col-xs-12.col-sm-8.col-sm-offset-2(ng-show='sent') Link to your scholarship application form was sent to {{ email }}.
+
+  form#application.row(ng-show='!sent')
+    .form-group.col-xs-12.col-sm-4.col-sm-offset-4
+      label.control-label(for='email') E-mail
+      input.form-control(id='email', type='email', ng-model='email', ng-show='!sending')
+      input.form-control(id='email', type='email', ng-model='email', ng-show='sending', readonly, disabled)
+
+    button.col-xs-10.col-sm-4.col-xs-offset-1.col-sm-offset-4.btn.btn-lg.btn-success(ng-show='!sending && !sent', ng-click='sendLink()') Send application link
+    button.col-xs-10.col-sm-4.col-xs-offset-1.col-sm-offset-4.btn.btn-lg.btn-success.disabled(ng-show='sending && !sent') Sending ...
