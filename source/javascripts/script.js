@@ -99,7 +99,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                             url    : API_URL + 'entity-' + $scope.id + '/rights',
                             data   : getSignedData(API_USER, API_KEY, {
                                 'entity': $scope.id,
-                                'right': 'editor'
+                                'right': 'owner'
                             })
                         })
                         .success(function(data) {
