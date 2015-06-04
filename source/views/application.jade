@@ -63,19 +63,25 @@ script(type='text/ng-template', id='application')
       b NB!
       |  Also add and fill information about the planned foreign Master´s studies.
 
-    .form-group.col-xs-12.col-sm-4.col-sm-offset-1(ng-repeat-start='(id, e) in education')
+    .spacer.col-xs-12(ng-repeat-start='(id, e) in education')
+
+    .form-group.col-xs-12.col-sm-4.col-sm-offset-1
       label.control-label(for='institution-{{ id }}') University
       input.form-control(id='institution-{{ id }}', type='text', ng-model='e.institution.value', ng-blur='doUniSave($event)')
-
-    .form-group.col-xs-12.col-sm-4
-      label.control-label(for='curriculum-{{ id }}') Curriculum
-      input.form-control(id='curriculum-{{ id }}', type='text', ng-model='e.curriculum.value', ng-blur='doUniSave($event)')
 
     .form-group.col-xs-12.col-sm-2
       label.control-label(for='degree-{{ id }}') Degree
       input.form-control(id='degree-{{ id }}', type='text', ng-model='e.degree.value', ng-blur='doUniSave($event)')
 
-    .form-group.col-xs-12.col-sm-3.col-md-2.col-sm-offset-1
+    .form-group.col-xs-12.col-sm-4
+      label.control-label(for='curriculum-{{ id }}') Curriculum
+      input.form-control(id='curriculum-{{ id }}', type='text', ng-model='e.curriculum.value', ng-blur='doUniSave($event)')
+
+    .form-group.col-xs-12.col-sm-4.col-sm-offset-1
+      label.control-label(for='url-{{ id }}') Curriculum URL
+      input.form-control(id='url-{{ id }}', type='text', ng-model='e.url.value', ng-blur='doUniSave($event)')
+
+    .form-group.col-xs-12.col-sm-3.col-md-2
       label.control-label(for='graduation_year-{{ id }}') Graduation year
       input.form-control(id='graduation_year-{{ id }}', type='text', ng-model='e.graduation_year.value', ng-blur='doUniSave($event)')
 
@@ -83,7 +89,7 @@ script(type='text/ng-template', id='application')
       label.control-label(for='average_grade-{{ id }}') Average grade
       input.form-control(id='average_grade-{{ id }}', type='text', ng-model='e.average_grade.value', ng-blur='doUniSave($event)')
 
-    .form-group.col-xs-12.col-sm-4.col-md-6
+    .form-group.col-xs-12.col-sm-4.col-md-6.col-sm-offset-1
       label.control-label(for='thesis_title-{{ id }}') Thesis title or topic
       input.form-control(id='thesis_title-{{ id }}', type='text', ng-model='e.thesis_title.value', ng-blur='doUniSave($event)')
 
