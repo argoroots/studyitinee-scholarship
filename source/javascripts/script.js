@@ -235,7 +235,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
             $scope.sending = true
             $timeout(function() {
                 $scope.sending = false
-            }, 2000)
+            }, 3000)
         }
 
         $scope.doFileUpload = function(e) {
