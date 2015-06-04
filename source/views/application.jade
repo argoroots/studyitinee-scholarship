@@ -51,13 +51,17 @@ script(type='text/ng-template', id='application')
 
 
     .form-group.col-xs-12.col-sm-4.col-sm-offset-1
-      label.control-label(for='phone') Phone
+      label.control-label(for='phone') Phone (mobile)
       input.form-control(id='phone', type='tel', ng-model='application.phone.value', ng-blur='doSave($event)')
 
 
     h2.col-xs-12.col-sm-10.col-sm-offset-1 Education
 
-    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education.
+
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify(ng-if='sponsor==="skype"')
+      b NB!
+      |  Also add and fill information about the planned foreign Master´s studies.
 
     .form-group.col-xs-12.col-sm-4.col-sm-offset-1(ng-repeat-start='(id, e) in education')
       label.control-label(for='institution-{{ id }}') University
@@ -80,7 +84,7 @@ script(type='text/ng-template', id='application')
       input.form-control(id='average_grade-{{ id }}', type='text', ng-model='e.average_grade.value', ng-blur='doUniSave($event)')
 
     .form-group.col-xs-12.col-sm-4.col-md-6
-      label.control-label(for='thesis_title-{{ id }}') Thesis title
+      label.control-label(for='thesis_title-{{ id }}') Thesis title or topic
       input.form-control(id='thesis_title-{{ id }}', type='text', ng-model='e.thesis_title.value', ng-blur='doUniSave($event)')
 
     .spacer.col-xs-12(ng-repeat-end)
