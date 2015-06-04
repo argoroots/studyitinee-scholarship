@@ -1,4 +1,4 @@
-var PAGE_URL       = 'http://localhost:4000/'
+var PAGE_URL       = 'http://scholarship.studyitin.ee/'
 var API_URL        = 'https://hitsa.entu.ee/api2/'
 var API_USER       = 3409
 var API_KEY        = 'z3Sg6S2ea9NRY5Chhjxg52wcPVy5LQBB'
