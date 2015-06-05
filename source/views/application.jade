@@ -57,7 +57,8 @@ script(type='text/ng-template', id='application')
 
     h2.col-xs-12.col-sm-10.col-sm-offset-1 Education
 
-    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education.
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify(ng-if='sponsor==="skype"') Information about the current higher education. As first please write about your last acquired higher education.
+    p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify(ng-if='sponsor==="lhv"') Information about the current higher education. In case your previous higher education is relevant by this scholarship please write also about the last acquired higher education.
 
     p.col-xs-12.col-sm-10.col-sm-offset-1.text-justify(ng-if='sponsor==="skype"')
       b NB!
