@@ -125,7 +125,7 @@ angular.module('xApp', ['ngRoute', 'ngResource'])
                                                     data   : getSignedData(API_USER, API_KEY, {
                                                         'to': $scope.email,
                                                         'subject': email_subject,
-                                                        'message': 'Here is the link to your scholarship application form. Please keep it safe.<br>\n<br>\n<a href="' + url + '">' + url + '</a><br>\n<br>\nDo not share it!'
+                                                        'message': 'Here is the link to your scholarship application form. You can return and complement Your application via the same link until submission deadline. Please keep it safe.<br>\n<br>\n<a href="' + url + '">' + url + '</a><br>\n<br>\nDo not share it!'
                                                     })
                                                 })
                                                 .success(function(data) {
